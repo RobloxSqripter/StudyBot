@@ -11,6 +11,19 @@ import cmath
 import asyncio
 from pymongo.mongo_client import MongoClient
 from bson.objectid import ObjectId
+from flask import Flask
+
+app = Flask('')
+
+def run():
+    app.run(host="0.0.0.0", port=8080)
+
+@app.route('/')
+def home():
+    return "hi :) under development"
+
+t2 = Thread(target=run)
+t2.start()
 
 uri = os.environ['urllink']
 
