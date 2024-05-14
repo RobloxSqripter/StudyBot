@@ -12,7 +12,7 @@ import asyncio
 from pymongo.mongo_client import MongoClient
 from bson.objectid import ObjectId
 
-uri = "mongodb+srv://CoinBot:coinbot123@coinbot.nqsluqc.mongodb.net/CoinBot?retryWrites=true&w=majority"
+uri = os.environ['urllink']
 
 mongo_client = MongoClient(uri)
 data_link = mongo_client.StudyBot
