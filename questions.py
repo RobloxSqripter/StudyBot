@@ -9,6 +9,17 @@ subject={
   }
 }
 
+religious_education = {
+  "Definitions":{
+  }
+}
+
+for i in open(f"re-definitions.txt", "r").readlines():
+  i = i.replace("\n", "")
+  i = i.split("	")
+  if len(i) == 2:
+    religious_education["Definitions"]["Define "+i[0]] = {"type":"definition", "marks":1, "answer":i[1]}
+
 computing={
   "Components of a Computer System":{
     "Name all 4 components of the CPU.":{
