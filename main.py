@@ -5,7 +5,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
-from questions import computing
+from questions import computing, religious_education
 import random
 import cmath
 import asyncio
@@ -13,6 +13,8 @@ from pymongo.mongo_client import MongoClient
 from bson.objectid import ObjectId
 from flask import Flask
 from threading import Thread
+
+
 
 app = Flask('')
 
@@ -26,7 +28,7 @@ def home():
 t2 = Thread(target=run)
 t2.start()
 
-uri = os.environ['urllink']
+uri = "mongodb+srv://CoinBot:coinbot123@coinbot.nqsluqc.mongodb.net/CoinBot?retryWrites=true&w=majority"
 
 mongo_client = MongoClient(uri)
 data_link = mongo_client.StudyBot
@@ -368,6 +370,7 @@ async def analyse(ctx, *args):
 
 subjects_={
   "computing": computing,
+  "re": religious_education,
 }
 
 @bot.command()
@@ -471,6 +474,27 @@ async def test(ctx, subject = None, amount = None, type = None):
       else:
         embed.color=discord.Color.red()
         embed.add_field(name="Marks",value=f"0/1 <:incorrect:1239254030773915708>", inline=False)
+      await ctx.reply(embed=embed)
+    elif the_questions[question]['type']=="definition":
+      answer = the_questions[question]["answer"].lower()
+      embed=discord.Embed(title=f"Question {i+1}",description=question,color=discord.Color.random())
+      await ctx.reply(embed=embed)
+      inputed = str(await discordinput(ctx)).lower()
+      total_marks += 1
+      embed=discord.Embed(title=f"Question {i+1}",description=question)
+      
+      choice_list = list(inputed.split(" "))
+      answer_list = list(answer.split(" "))
+      percent_correct = len(list(set(answer_list).intersection(choice_list)))/len(answer_list)
+      if percent_correct > 0.75:
+        current_marks += 1
+        embed.color=discord.Color.green()
+        embed.add_field(name="Marks",value=f"1/1 <:correct:1239254032523067505>", inline=False)
+      else:
+        embed.color=discord.Color.red()
+        embed.add_field(name="Marks",value=f"0/1 <:incorrect:1239254030773915708>", inline=False)
+        embed.add_field(name="Correct Answer",value=answer, inline=False)
+      embed.set_footer(text = f"{round(percent_correct*100)}% correct")
       await ctx.reply(embed=embed)
 
 
